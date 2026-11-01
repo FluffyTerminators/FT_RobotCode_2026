@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
@@ -42,9 +44,44 @@ public class TeleopTest extends LinearOpMode {
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
 
         s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
-            s_Intake = new Intake(intake);
-            s_Passthrough = new Passthrough(passthrough);
-            s_Shooter = new Shooter(polShooter, necShooter);
+        s_Intake = new Intake(intake);
+        s_Passthrough = new Passthrough(passthrough);
+        s_Shooter = new Shooter(polShooter, necShooter);
+
+        pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.setHeading(0, AngleUnit.DEGREES);
+        pinpoint.update();
+
+        boolean resetLast = false;
+        double heading;
+
+        telemetry.addData("Status;", "Initialised");
+        telemetry.update();
+        waitForStart();
+
+        while (opModeIsActive())
+        {
+            telemetry.addData("Status;", "Running");
+            telemetry.update();
+
+            if (gamepad1.left_bumper) {
+                if (!resetLast) {
+                    //imu.resetYaw();
+                    pinpoint.setHeading(0, AngleUnit.DEGREES);
+                    resetLast = true;
+                }
+            } else { resetLast = false; }
+            pinpoint.update();
+
+            double robotYaw = pinpoint.getHeading(AngleUnit.DEGREES);
+            heading = Math.toRadians(pinpoint.getPosition().getHeading(AngleUnit.DEGREES) + Constants.Drive.headingOffset);
+
+            telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
+            telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
+            telemetry.addData("Heading", Math.toDegrees(heading));
+        }
 
     }
 }
