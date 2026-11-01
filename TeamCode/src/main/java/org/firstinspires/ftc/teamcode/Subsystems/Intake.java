@@ -16,5 +16,4 @@ public class Intake {
     {
         m_Intake.setPower(0);
     }
-    //hello
 }
