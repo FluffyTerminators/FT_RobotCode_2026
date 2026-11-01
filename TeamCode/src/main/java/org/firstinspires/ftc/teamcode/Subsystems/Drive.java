@@ -28,7 +28,6 @@ public class Drive
         m_BRDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         m_FLDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        m_BLDrive.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public static void setHeading(double newHeading)
@@ -57,6 +56,8 @@ public class Drive
 
             return fieldCentricMode;
         }
+
+        public static
 }
 
 
