@@ -6,6 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import org.firstinspires.ftc.teamcode.Subsystems.Drive;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Util.Constants;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -20,6 +25,10 @@ public class TeleopTest extends LinearOpMode {
     public DcMotorEx necShooter;
     public CRServo passthrough;
     public GoBildaPinpointDriver pinpoint;
+    public Drive s_Drive;
+    public Intake s_Intake;
+    public Passthrough s_Passthrough;
+    public Shooter s_Shooter;
 
     public void runOpMode() throws InterruptedException{
         bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
@@ -31,6 +40,11 @@ public class TeleopTest extends LinearOpMode {
         necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
         passthrough = hardwareMap.get(CRServo.class, "Passthrough");
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
+
+        s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
+            s_Intake = new Intake(intake);
+            s_Passthrough = new Passthrough(passthrough);
+            s_Shooter = new Shooter(polShooter, necShooter);
 
     }
 }
