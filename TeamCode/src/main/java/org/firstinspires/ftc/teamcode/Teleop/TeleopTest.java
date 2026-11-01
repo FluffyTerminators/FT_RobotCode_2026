@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
@@ -15,7 +16,9 @@ public class TeleopTest extends LinearOpMode {
     public DcMotor fLDrive;
     public DcMotor fRDrive;
     public DcMotorEx intake;
-    public DcMotorEx ShFront;
+    public DcMotorEx polShooter;
+    public DcMotorEx necShooter;
+    public CRServo passthrough;
     public GoBildaPinpointDriver pinpoint;
 
     public void runOpMode() throws InterruptedException{
@@ -24,5 +27,10 @@ public class TeleopTest extends LinearOpMode {
         fLDrive = hardwareMap.get(DcMotor.class, "FLDrive");
         fRDrive = hardwareMap.get(DcMotor.class, "FRDrive");
         intake = hardwareMap.get(DcMotorEx.class, "Intake");
+        polShooter = hardwareMap.get(DcMotorEx.class, "PollenShooter");
+        necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
+        passthrough = hardwareMap.get(CRServo.class, "Passthrough");
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
+
     }
 }
