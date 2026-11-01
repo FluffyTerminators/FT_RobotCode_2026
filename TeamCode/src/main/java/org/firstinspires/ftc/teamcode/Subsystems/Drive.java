@@ -57,7 +57,7 @@ public class Drive
             return fieldCentricMode;
         }
 
-        public static void driveControl(volatile forwardInput, volatile strafeInput, volatile turnInput)
+        public static void driveControl(float forwardInput, float strafeInput, float turnInput)
         {
             double rawForward = forwardInput;
             double rawStrafe = strafeInput;
@@ -68,11 +68,11 @@ public class Drive
                 double sinHeading = Math.sin(heading);
                 double cosHeading = Math.cos(heading);
 
-                Strafe = rawStrafe * cosHeading + rawForward * sinHeading;
-                Forward = rawForward * cosHeading - rawStrafe * sinHeading;
+                strafe = rawStrafe * cosHeading + rawForward * sinHeading;
+                forward = rawForward * cosHeading - rawStrafe * sinHeading;
             } else {
-                Forward = -rawForward;
-                Strafe = rawStrafe;
+                forward = -rawForward;
+                strafe = rawStrafe;
             }
         }
 }
