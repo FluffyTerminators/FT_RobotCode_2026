@@ -56,6 +56,7 @@ public class TeleopTest extends LinearOpMode {
 
         boolean resetLast = false;
         double heading;
+        boolean pollen = true;
 
         telemetry.addData("Status;", "Initialised");
         telemetry.update();
@@ -81,6 +82,26 @@ public class TeleopTest extends LinearOpMode {
             telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
             telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
             telemetry.addData("Heading", Math.toDegrees(heading));
+            if (gamepad1.b){
+                Drive.isFieldCentricMode(getRuntime());
+            }
+            Drive.driveControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            if (gamepad2.right_bumper){
+                Shooter.pollenRev(500);
+                pollen = true;
+            }
+            if (gamepad2.left_bumper){
+                Shooter.necterRev(500);
+                pollen = false;
+            }
+            if (gamepad2.right_bumper || gamepad2.left_bumper)
+            {
+             if (Shooter.speedCheck(500,pollen)){
+                 Passthrough.runPass();
+             }
+            } else {
+                Passthrough.stopPass();
+            }
         }
 
     }
