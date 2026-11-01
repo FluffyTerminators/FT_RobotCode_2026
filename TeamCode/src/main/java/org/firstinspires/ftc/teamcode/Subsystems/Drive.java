@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.Util.Constants;
+
 public class Drive
 {
     private static DcMotor m_FLDrive;
@@ -14,6 +17,7 @@ public class Drive
     private static double heading = 0;
     private static double driveModeTimer = 0;
     private static boolean fieldCentricMode = true;
+    private static boolean brakeMode = false;
 
     public Drive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight)
     {
@@ -35,7 +39,7 @@ public class Drive
         heading = newHeading;
     }
 
-    public static boolean driveMode(double time)
+    public static boolean isFieldCentricMode(double time)
         {
             if (driveModeTimer == 0)
             {
@@ -57,6 +61,11 @@ public class Drive
             return fieldCentricMode;
         }
 
+        public static void setBrakeMode(boolean mode)
+        {
+            brakeMode = mode;
+        }
+
         public static void driveControl(float forwardInput, float strafeInput, float turnInput)
         {
             double rawForward = forwardInput;
@@ -74,6 +83,23 @@ public class Drive
                 forward = -rawForward;
                 strafe = rawStrafe;
             }
+
+            if (brakeMode) {
+                forward *= Constants.Drive.brake;
+                strafe *= Constants.Drive.brake;
+                turn *= Constants.Drive.brake;
+            }
+
+            double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(turn), 1);
+            double frontLeftPower = (forward + strafe + turn) / denominator;
+            double backLeftPower = (forward - strafe + turn) / denominator;
+            double frontRightPower = (forward - strafe - turn) / denominator;
+            double backRightPower = (forward + strafe - turn) / denominator;
+
+            m_FLDrive.setPower(frontLeftPower);
+            m_FRDrive.setPower(frontRightPower);
+            m_BLDrive.setPower(backLeftPower);
+            m_BRDrive.setPower(backRightPower);
         }
 }
 
