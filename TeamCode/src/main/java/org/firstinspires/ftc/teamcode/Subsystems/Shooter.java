@@ -32,8 +32,8 @@ public class Shooter {
             shooterSpeed = m_shooterNec.getVelocity();
         }
 
-        if ((shooterSpeed > (shooterTarget - Constants.shooter.shooter_speed_tolerance))
-                && (shooterSpeed <(shooterTarget + Constants.shooter.shooter_speed_tolerance)))
+        if ((shooterSpeed > (shooterTarget - Constants.Shooter.shooter_speed_tolerance))
+                && (shooterSpeed <(shooterTarget + Constants.Shooter.shooter_speed_tolerance)))
         {
             shooterready = true;
         } else
