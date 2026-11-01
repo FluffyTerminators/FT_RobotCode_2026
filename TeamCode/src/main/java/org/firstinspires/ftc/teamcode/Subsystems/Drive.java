@@ -15,7 +15,7 @@ public class Drive
     private static double driveModeTimer = 0;
     private static boolean fieldCentricMode = true;
 
-    public static void driveInit(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight)
+    public Drive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight)
     {
         m_FLDrive = frontLeft;
         m_FRDrive = frontRight;
