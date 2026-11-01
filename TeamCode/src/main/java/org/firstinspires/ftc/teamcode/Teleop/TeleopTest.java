@@ -102,6 +102,13 @@ public class TeleopTest extends LinearOpMode {
             } else {
                 Passthrough.stopPass();
             }
+
+            if (gamepad2.right_trigger > 0)
+            {
+                Intake.runIntake();
+            } else {
+                Intake.stopIntake();
+            }
         }
 
     }
