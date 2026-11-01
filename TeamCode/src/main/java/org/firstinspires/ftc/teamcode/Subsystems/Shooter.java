@@ -9,27 +9,35 @@ public class Shooter {
     public static DcMotorEx m_shooterNec;
     private static double shooterSpeed;
     private static boolean shooterready;
-    public static void shooterInit(DcMotorEx pollenMoter, DcMotorEx necterMoter){
-        m_shooterPol = pollenMoter;
-        m_shooterNec = necterMoter;
+    public Shooter(DcMotorEx pollenMotor, DcMotorEx necterMotor)
+    {
+        m_shooterPol = pollenMotor;
+        m_shooterNec = necterMotor;
     }
-    public static void pollenRev(double revspeed){
+    public static void pollenRev(double revspeed)
+    {
         m_shooterPol.setVelocity(revspeed);
     }
-    public static void necterRev(double revspeed){
+    public static void necterRev(double revspeed)
+    {
         m_shooterNec.setVelocity(revspeed);
     }
-    public static boolean speedCheck(double shooterTarget, boolean pollen){
-        if (pollen) {
+    public static boolean speedCheck(double shooterTarget, boolean pollen)
+    {
+        if (pollen)
+        {
         shooterSpeed = m_shooterPol.getVelocity();
-        } else {
+        } else
+        {
             shooterSpeed = m_shooterNec.getVelocity();
         }
 
         if ((shooterSpeed > (shooterTarget - Constants.shooter.shooter_speed_tolerance))
-                && (shooterSpeed <(shooterTarget + Constants.shooter.shooter_speed_tolerance))){
+                && (shooterSpeed <(shooterTarget + Constants.shooter.shooter_speed_tolerance)))
+        {
             shooterready = true;
-        } else {
+        } else
+        {
             shooterready = false;
         }
 
