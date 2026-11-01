@@ -57,7 +57,12 @@ public class Drive
             return fieldCentricMode;
         }
 
-        public static
+        public static void driveControl(volatile forwardInput, volatile strafeInput, volatile turnInput)
+        {
+            double rawForward = forwardInput;
+            double rawStrafe = strafeInput;
+            turn = turnInput;
+        }
 }
 
 
