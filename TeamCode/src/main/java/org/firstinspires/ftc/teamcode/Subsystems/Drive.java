@@ -62,6 +62,18 @@ public class Drive
             double rawForward = forwardInput;
             double rawStrafe = strafeInput;
             turn = turnInput;
+
+            if (fieldCentricMode)
+            {
+                double sinHeading = Math.sin(heading);
+                double cosHeading = Math.cos(heading);
+
+                Strafe = rawStrafe * cosHeading + rawForward * sinHeading;
+                Forward = rawForward * cosHeading - rawStrafe * sinHeading;
+            } else {
+                Forward = -rawForward;
+                Strafe = rawStrafe;
+            }
         }
 }
 
