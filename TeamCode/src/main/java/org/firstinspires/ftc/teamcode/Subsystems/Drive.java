@@ -57,7 +57,24 @@ public class Drive
             return fieldCentricMode;
         }
 
-        public static
+        public static void driveControl(float forwardInput, float strafeInput, float turnInput)
+        {
+            double rawForward = forwardInput;
+            double rawStrafe = strafeInput;
+            turn = turnInput;
+
+            if (fieldCentricMode)
+            {
+                double sinHeading = Math.sin(heading);
+                double cosHeading = Math.cos(heading);
+
+                strafe = rawStrafe * cosHeading + rawForward * sinHeading;
+                forward = rawForward * cosHeading - rawStrafe * sinHeading;
+            } else {
+                forward = -rawForward;
+                strafe = rawStrafe;
+            }
+        }
 }
 
 
