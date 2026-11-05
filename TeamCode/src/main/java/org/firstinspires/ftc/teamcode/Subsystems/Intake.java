@@ -10,7 +10,12 @@ public class Intake {
     }
     public static void runIntake()
     {
-        m_Intake.setPower(1);    }
+        m_Intake.setPower(1);
+    }
+    public static void ejectIntake()
+    {
+        m_Intake.setPower(-1);
+    }
     public static void stopIntake()
     {
         m_Intake.setPower(0);

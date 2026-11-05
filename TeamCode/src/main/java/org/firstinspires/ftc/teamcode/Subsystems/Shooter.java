@@ -8,7 +8,7 @@ public class Shooter {
     public static DcMotorEx m_shooterPol;
     public static DcMotorEx m_shooterNec;
     private static double shooterSpeed;
-    private static boolean shooterready;
+    private static boolean shooterReady;
     public Shooter(DcMotorEx pollenMotor, DcMotorEx necterMotor)
     {
         m_shooterPol = pollenMotor;
@@ -21,6 +21,14 @@ public class Shooter {
     public static void necterRev(double revspeed)
     {
         m_shooterNec.setVelocity(revspeed);
+    }
+    public static void pollenEject()
+    {
+        m_shooterPol.setPower(-1);
+    }
+    public static void necterEject()
+    {
+        m_shooterNec.setPower(-1);
     }
     public static boolean speedCheck(double shooterTarget, boolean pollen)
     {
@@ -35,12 +43,12 @@ public class Shooter {
         if ((shooterSpeed > (shooterTarget - Constants.Shooter.shooter_speed_tolerance))
                 && (shooterSpeed <(shooterTarget + Constants.Shooter.shooter_speed_tolerance)))
         {
-            shooterready = true;
+            shooterReady = true;
         } else
         {
-            shooterready = false;
+            shooterReady = false;
         }
 
-        return shooterready;
+        return shooterReady;
     }
 }
