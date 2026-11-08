@@ -106,6 +106,8 @@ public class TeleopTest extends LinearOpMode {
             if (gamepad2.right_trigger > 0)
             {
                 Intake.runIntake();
+            } else if (gamepad2.a){
+                Intake.ejectIntake();
             } else {
                 Intake.stopIntake();
             }
