@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp(name = "BioTele")
@@ -25,14 +26,14 @@ public class TeleopTest extends LinearOpMode {
     public DcMotorEx intake;
     public DcMotorEx polShooter;
     public DcMotorEx necShooter;
-    public CRServo passthrough;
+    public DcMotorEx passthrough;
     public GoBildaPinpointDriver pinpoint;
     public Drive s_Drive;
     public Intake s_Intake;
     public Passthrough s_Passthrough;
     public Shooter s_Shooter;
 
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
         bRDrive = hardwareMap.get(DcMotor.class, "BRDrive");
         fLDrive = hardwareMap.get(DcMotor.class, "FLDrive");
@@ -40,7 +41,7 @@ public class TeleopTest extends LinearOpMode {
         intake = hardwareMap.get(DcMotorEx.class, "Intake");
         polShooter = hardwareMap.get(DcMotorEx.class, "PollenShooter");
         necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
-        passthrough = hardwareMap.get(CRServo.class, "Passthrough");
+        passthrough = hardwareMap.get(DcMotorEx.class, "Passthrough");
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
 
         s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
@@ -62,8 +63,7 @@ public class TeleopTest extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             telemetry.addData("Status;", "Running");
             telemetry.update();
 
@@ -73,7 +73,9 @@ public class TeleopTest extends LinearOpMode {
                     pinpoint.setHeading(0, AngleUnit.DEGREES);
                     resetLast = true;
                 }
-            } else { resetLast = false; }
+            } else {
+                resetLast = false;
+            }
             pinpoint.update();
 
             double robotYaw = pinpoint.getHeading(AngleUnit.DEGREES);
@@ -82,31 +84,34 @@ public class TeleopTest extends LinearOpMode {
             telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
             telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
             telemetry.addData("Heading", Math.toDegrees(heading));
-            if (gamepad1.b){
+            if (gamepad1.b) {
                 Drive.isFieldCentricMode(getRuntime());
             }
             Drive.driveControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-            if (gamepad2.right_bumper){
-                Shooter.pollenRev(500);
+            if (gamepad2.right_bumper) {
+                Shooter.pollenRev(-500);
                 pollen = true;
+            } else {
+                Shooter.pollenstop();
             }
-            if (gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
                 Shooter.necterRev(500);
                 pollen = false;
+            } else {
+                Shooter.nectarstop();
             }
-            if (gamepad2.right_bumper || gamepad2.left_bumper)
-            {
-             if (Shooter.speedCheck(500,pollen)){
-                 Passthrough.runPass();
-             }
+
+            if (gamepad2.right_bumper || gamepad2.left_bumper) {
+                if (Shooter.speedCheck(500, pollen)) {
+                    Passthrough.runPass();
+                }
             } else {
                 Passthrough.stopPass();
             }
 
-            if (gamepad2.right_trigger > 0)
-            {
+            if (gamepad2.right_trigger > 0.1) {
                 Intake.runIntake();
-            } else if (gamepad2.a){
+            } else if (gamepad2.a) {
                 Intake.ejectIntake();
             } else {
                 Intake.stopIntake();
@@ -115,4 +120,5 @@ public class TeleopTest extends LinearOpMode {
 
     }
 }
+
 

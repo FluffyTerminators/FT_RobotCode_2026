@@ -14,6 +14,12 @@ public class Shooter {
         m_shooterPol = pollenMotor;
         m_shooterNec = necterMotor;
     }
+    public static void pollenstop(){
+        m_shooterPol.setPower(0);
+    }
+    public static void nectarstop(){
+        m_shooterNec.setPower(0);
+    }
     public static void pollenRev(double revspeed)
     {
         m_shooterPol.setVelocity(revspeed);
@@ -24,7 +30,7 @@ public class Shooter {
     }
     public static void pollenEject()
     {
-        m_shooterPol.setPower(-1);
+        m_shooterPol.setPower(1);
     }
     public static void necterEject()
     {
