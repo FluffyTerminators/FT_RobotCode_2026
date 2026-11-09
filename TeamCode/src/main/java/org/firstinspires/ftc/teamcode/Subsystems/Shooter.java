@@ -5,38 +5,38 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
 public class Shooter {
-    public static DcMotorEx m_shooterPol;
-    public static DcMotorEx m_shooterNec;
-    private static double shooterSpeed;
-    private static boolean shooterReady;
+    public DcMotorEx m_shooterPol;
+    public DcMotorEx m_shooterNec;
+    private double shooterSpeed;
+    private boolean shooterReady;
     public Shooter(DcMotorEx pollenMotor, DcMotorEx necterMotor)
     {
         m_shooterPol = pollenMotor;
         m_shooterNec = necterMotor;
     }
-    public static void pollenstop(){
+    public void pollenstop(){
         m_shooterPol.setPower(0);
     }
-    public static void nectarstop(){
+    public void nectarstop(){
         m_shooterNec.setPower(0);
     }
-    public static void pollenRev(double revspeed)
+    public void pollenRev(double revspeed)
     {
         m_shooterPol.setVelocity(revspeed);
     }
-    public static void necterRev(double revspeed)
+    public void necterRev(double revspeed)
     {
         m_shooterNec.setVelocity(revspeed);
     }
-    public static void pollenEject()
+    public void pollenEject()
     {
         m_shooterPol.setPower(1);
     }
-    public static void necterEject()
+    public void necterEject()
     {
         m_shooterNec.setPower(-1);
     }
-    public static boolean speedCheck(double shooterTarget, boolean pollen)
+    public boolean speedCheck(double shooterTarget, boolean pollen)
     {
         if (pollen)
         {

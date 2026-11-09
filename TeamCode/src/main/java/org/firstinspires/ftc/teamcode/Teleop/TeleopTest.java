@@ -85,36 +85,36 @@ public class TeleopTest extends LinearOpMode {
             telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
             telemetry.addData("Heading", Math.toDegrees(heading));
             if (gamepad1.b) {
-                Drive.isFieldCentricMode(getRuntime());
+                s_Drive.isFieldCentricMode(getRuntime());
             }
-            Drive.driveControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            s_Drive.driveControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             if (gamepad2.right_bumper) {
-                Shooter.pollenRev(-500);
+                s_Shooter.pollenRev(-500);
                 pollen = true;
             } else {
-                Shooter.pollenstop();
+                s_Shooter.pollenstop();
             }
             if (gamepad2.left_bumper) {
-                Shooter.necterRev(500);
+                s_Shooter.necterRev(500);
                 pollen = false;
             } else {
-                Shooter.nectarstop();
+                s_Shooter.nectarstop();
             }
 
             if (gamepad2.right_bumper || gamepad2.left_bumper) {
                 if (Shooter.speedCheck(500, pollen)) {
-                    Passthrough.runPass();
+                    s_Passthrough.runPass();
                 }
             } else {
-                Passthrough.stopPass();
+                s_Passthrough.stopPass();
             }
 
             if (gamepad2.right_trigger > 0.1) {
-                Intake.runIntake();
+                s_Intake.runIntake();
             } else if (gamepad2.a) {
-                Intake.ejectIntake();
+                s_Intake.ejectIntake();
             } else {
-                Intake.stopIntake();
+                s_Intake.stopIntake();
             }
         }
 
