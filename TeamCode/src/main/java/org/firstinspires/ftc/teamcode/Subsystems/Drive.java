@@ -103,11 +103,11 @@ public class Drive
                 BLAdjust = 0;
             }
             else {
-                if (BLEncoder > BLEncoderLast) {
-                    BLAdjust += 0.001;
+                if (BLEncoder < BLEncoderLast) {
+                    BLAdjust += 0.005;
                 }
-                else if (BLEncoder < BLEncoderLast) {
-                    BLAdjust -= 0.001;
+                else if (BLEncoder > BLEncoderLast) {
+                    BLAdjust -= 0.005;
                 }
                 backLeftPower = BLAdjust;
             }
