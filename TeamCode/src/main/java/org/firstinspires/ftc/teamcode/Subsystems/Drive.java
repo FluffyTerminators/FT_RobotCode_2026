@@ -16,7 +16,7 @@ public class Drive
     private double forward = 0;
     private double strafe = 0;
     private double turn = 0;
-    private double heading = 0;
+
     private double driveModeTimer = 0;
     private boolean fieldCentricMode = true;
     private boolean brakeMode = false;
@@ -45,10 +45,6 @@ public class Drive
         m_FLDrive.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void setHeading(double newHeading)
-    {
-        heading = newHeading;
-    }
 
     public boolean isFieldCentricMode(double time)
     {
@@ -77,7 +73,7 @@ public class Drive
             brakeMode = mode;
         }
 
-    public void driveControl(float forwardInput, float strafeInput, float turnInput)
+    public void driveControl(float forwardInput, float strafeInput, float turnInput, double heading)
     {
 
         double frontLeftPower = 0;
@@ -152,7 +148,10 @@ public class Drive
         m_FRDrive.setPower(frontRightPower);
         m_BLDrive.setPower(backLeftPower);
         m_BRDrive.setPower(backRightPower);
+
+
     }
+
 }
 
 

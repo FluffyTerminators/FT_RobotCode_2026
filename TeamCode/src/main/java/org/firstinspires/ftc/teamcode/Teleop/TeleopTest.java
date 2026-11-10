@@ -87,7 +87,7 @@ public class TeleopTest extends LinearOpMode {
             if (gamepad1.b) {
                 s_Drive.isFieldCentricMode(getRuntime());
             }
-            s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x,pinpoint.getHeading(AngleUnit.RADIANS));
             if (gamepad2.right_bumper) {
                 s_Shooter.pollenRev(-1500);
                 pollen = true;
