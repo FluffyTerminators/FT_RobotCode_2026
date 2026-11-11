@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.AutomaticShoot;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
 
@@ -34,6 +35,7 @@ public class TeleopTest extends LinearOpMode {
     public Intake s_Intake;
     public Passthrough s_Passthrough;
     public Shooter s_Shooter;
+    public AutomaticShoot s_AutoShoot;
 
     public void runOpMode() throws InterruptedException {
         bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
@@ -50,6 +52,7 @@ public class TeleopTest extends LinearOpMode {
         s_Intake = new Intake(intake);
         s_Passthrough = new Passthrough(passthrough);
         s_Shooter = new Shooter(polShooter, necShooter);
+        s_AutoShoot = new AutomaticShoot(pinpoint);
 
         pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -206,9 +209,11 @@ public class TeleopTest extends LinearOpMode {
             } else {
                 s_Intake.stopIntake();
             }
-        }
 
     }
 }
 //hello
+            }
+
+
 
