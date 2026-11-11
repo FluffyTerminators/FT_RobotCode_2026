@@ -68,12 +68,16 @@ public class Drive
         return fieldCentricMode;
     }
 
+    public void autoFieldCentric(){
+        fieldCentricMode = !fieldCentricMode;
+    }
+
     public void setBrakeMode(boolean mode)
         {
             brakeMode = mode;
         }
 
-    public void driveControl(float forwardInput, float strafeInput, float turnInput, double heading)
+    public void driveControl(double forwardInput, double strafeInput, double turnInput, double heading)
     {
 
         double frontLeftPower = 0;
