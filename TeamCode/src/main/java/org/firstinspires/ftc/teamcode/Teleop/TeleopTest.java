@@ -56,7 +56,7 @@ public class TeleopTest extends LinearOpMode {
 
         pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         pinpoint.setHeading(0, AngleUnit.DEGREES);
         pinpoint.update();
 
@@ -168,28 +168,36 @@ public class TeleopTest extends LinearOpMode {
             s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
             if (gamepad2.right_bumper) {
                 shooting = true;
-                s_Shooter.pollenRev(-760);
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
                 pollen = true;
-                if (s_Shooter.speedCheck(-760, pollen))/* && !shotLast)*/ {
+                if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
                     shotLast = true;
                 }
+                else {
+                    s_Passthrough.stopPass();
+                    shotLast = false;
+                }
             } else {
                 shooting = false;
-                shotLast = true;
+                shotLast = false;
                 s_Shooter.pollenstop();
             }
             telemetry.addData("polRev;", polShooter.getVelocity());
             if (gamepad2.left_bumper) {
                 shooting = true;
-                s_Shooter.necterRev(680);
+                s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
                 pollen = false;
-                if (s_Shooter.speedCheck(680, pollen))/* && !shotLast)*/ {
+                if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
                     shotLast = true;
+                } else {
+                    s_Passthrough.stopPass();
+                    shotLast = false;
                 }
             } else {
                 shooting = false;
+                shotLast = false;
                 s_Shooter.nectarstop();
             }
             telemetry.addData("nectRev:", necShooter.getVelocity());
@@ -210,6 +218,8 @@ public class TeleopTest extends LinearOpMode {
                 s_Intake.stopIntake();
             }
 
+            telemetry.addData("X:",pinpoint.getPosition().getX(DistanceUnit.INCH));
+            telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
         }
     }
 //hello

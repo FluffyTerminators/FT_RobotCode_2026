@@ -100,12 +100,51 @@ public class Drive
             }
             else {
                 if (BLEncoder < BLEncoderLast) {
-                    BLAdjust += 0.005;
+                    BLAdjust += Constants.Drive.activeBrakeStep;
                 }
                 else if (BLEncoder > BLEncoderLast) {
-                    BLAdjust -= 0.005;
+                    BLAdjust -= Constants.Drive.activeBrakeStep;
                 }
                 backLeftPower = BLAdjust;
+            }
+
+            if (FLEncoderLast == 0){
+                FLAdjust = 0;
+            }
+            else {
+                if (FLEncoder < FLEncoderLast) {
+                    FLAdjust += Constants.Drive.activeBrakeStep;
+                }
+                else if (FLEncoder > FLEncoderLast) {
+                    FLAdjust -= Constants.Drive.activeBrakeStep;
+                }
+                frontLeftPower = FLAdjust;
+            }
+
+            if (BREncoderLast == 0){
+                BRAdjust = 0;
+            }
+            else {
+                if (BREncoder < BREncoderLast) {
+                    BRAdjust += Constants.Drive.activeBrakeStep;
+                }
+                else if (BREncoder > BREncoderLast) {
+                    BRAdjust -= Constants.Drive.activeBrakeStep;
+                }
+                backRightPower = BRAdjust;
+            }
+
+            if (FREncoderLast == 0){
+                FRAdjust = 0;
+            }
+            else {
+                if (FREncoder < FREncoderLast) {
+                    FRAdjust += Constants.Drive.activeBrakeStep;
+                }
+                else if (FREncoder > FREncoderLast) {
+                    FRAdjust -= Constants.Drive.activeBrakeStep;
+                }
+                frontRightPower = FRAdjust;
             }
 
             BLEncoderLast = BLEncoder;
