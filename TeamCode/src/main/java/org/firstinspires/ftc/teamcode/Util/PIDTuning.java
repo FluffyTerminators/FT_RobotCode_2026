@@ -24,8 +24,8 @@ public final class PIDTuning {
 
     public static double PolVelocityKp = 58;
     public static double PolVelocityKi = 0;
-    public static double PolVelocityKd = 1;
-    public static double PolVelocityKf = 21;
+    public static double PolVelocityKd = 15;
+    public static double PolVelocityKf = 28;
 
     public static double NecVelocityKp = 55;
     public static double NecVelocityKi = 0;

@@ -15,7 +15,7 @@ public class Shooter {
         m_shooterNec = necterMotor;
 
        PIDTuning.applyTo(pollenMotor, 2);
-       // PIDTuning.applyTo(necterMotor, 3);
+       PIDTuning.applyTo(necterMotor, 2);
     }
     public void pollenstop(){
         m_shooterPol.setPower(0);

@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Util.Constants;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Util.PIDTuning;
 
 @TeleOp(name = "BioTele")
 public class TeleopTest extends LinearOpMode {
@@ -60,13 +61,13 @@ public class TeleopTest extends LinearOpMode {
         double heading;
         boolean pollen = true;
         double testRev = 0;
-        double p = 0;
+        double p = PIDTuning.PolVelocityKp;
         boolean pLast = false;
-        double i = 0;
+        double i = PIDTuning.PolVelocityKi;
         boolean iLast = false;
-        double d = 0;
+        double d = PIDTuning.PolVelocityKd;
         boolean dLast = false;
-        double f = 0;
+        double f = PIDTuning.PolVelocityKf;
         boolean fLast = false;
         boolean shooting = false;
         boolean shotLast = false;
@@ -103,9 +104,9 @@ public class TeleopTest extends LinearOpMode {
             if (gamepad1.y) {
                 if (!pLast){
                     if (gamepad1.left_bumper){
-                        p -= 0.1;
+                        p -= 1;
                     } else {
-                        p += 0.1;
+                        p += 1;
                     }
                     pLast = true;
                 }
@@ -142,9 +143,9 @@ public class TeleopTest extends LinearOpMode {
             if (gamepad1.x) {
                 if (!fLast){
                     if (gamepad1.left_bumper){
-                        f -= 0.1;
+                        f -= 1;
                     } else {
-                        f += 0.1;
+                        f += 1;
                     }
                     fLast = true;
                 }
@@ -159,14 +160,14 @@ public class TeleopTest extends LinearOpMode {
 
             PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
 
-            necShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
+           polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
 
             s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x,pinpoint.getHeading(AngleUnit.RADIANS));
             if (gamepad2.right_bumper) {
                 shooting = true;
-                s_Shooter.pollenRev(-860);
+                s_Shooter.pollenRev(-760);
                 pollen = true;
-                if (s_Shooter.speedCheck(-860,pollen))/* && !shotLast)*/{
+                if (s_Shooter.speedCheck(-760,pollen))/* && !shotLast)*/{
                     s_Passthrough.runPass();
                     shotLast = true;
                 }
@@ -177,11 +178,18 @@ public class TeleopTest extends LinearOpMode {
             }
             telemetry.addData("polRev;", polShooter.getVelocity());
             if (gamepad2.left_bumper) {
-                s_Shooter.necterRev(1500);
+                shooting = true;
+                s_Shooter.necterRev(680);
                 pollen = false;
+                if (s_Shooter.speedCheck(680,pollen))/* && !shotLast)*/{
+                    s_Passthrough.runPass();
+                    shotLast = true;
+                }
             } else {
+                shooting = false;
                 s_Shooter.nectarstop();
             }
+            telemetry.addData("nectRev:",necShooter.getVelocity());
 
             if (gamepad2.dpad_up) {
                 s_Passthrough.runPass();
