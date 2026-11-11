@@ -11,11 +11,11 @@ public class Passthrough {
     }
     public void runPass()
     {
-         se_Pass.setPower(-0.7);
+         se_Pass.setPower(1);
     }
     public void ejectPass()
     {
-        se_Pass.setPower(0.7);
+        se_Pass.setPower(1);
     }
     public void stopPass()
     {

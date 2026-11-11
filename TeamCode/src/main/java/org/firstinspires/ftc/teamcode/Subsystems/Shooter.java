@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
+import org.firstinspires.ftc.teamcode.Util.PIDTuning;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
 public class Shooter {
@@ -13,6 +13,9 @@ public class Shooter {
     {
         m_shooterPol = pollenMotor;
         m_shooterNec = necterMotor;
+
+       PIDTuning.applyTo(pollenMotor, 2);
+       // PIDTuning.applyTo(necterMotor, 3);
     }
     public void pollenstop(){
         m_shooterPol.setPower(0);
@@ -40,7 +43,7 @@ public class Shooter {
     {
         if (pollen)
         {
-        shooterSpeed = m_shooterPol.getVelocity();
+            shooterSpeed = m_shooterPol.getVelocity();
         } else
         {
             shooterSpeed = m_shooterNec.getVelocity();

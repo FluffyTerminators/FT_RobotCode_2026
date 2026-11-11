@@ -11,7 +11,7 @@ public class Constants
         public static final double deadband = 0.05;
     }
     public static final class Shooter {
-        public static final double shooter_speed_tolerance = 41;
+        public static final double shooter_speed_tolerance = 21;
     }
 
 }
