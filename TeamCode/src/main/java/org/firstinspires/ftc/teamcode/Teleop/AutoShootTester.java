@@ -94,8 +94,8 @@ public class AutoShootTester extends LinearOpMode {
             if (gamepad1.dpad_left) {
                 s_AutoShoot.pointToPos(72, 72);
 
-                while(!(robotYaw < (s_AutoShoot.Angle - 1)) && (robotYaw > (s_AutoShoot.Angle + 1))) {
-                    s_Drive.driveControl(0, 0, 1);
+                while(Math.abs(robotYaw - s_AutoShoot.Angle) > 1) {
+                    s_Drive.driveControl(0, 0, 1, 0);
                 }
             }
         }
