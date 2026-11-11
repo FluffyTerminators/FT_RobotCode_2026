@@ -17,7 +17,7 @@ public class AutomaticShoot {
         double hypToPosition = Math.sqrt(Math.pow(x - pinpoint.getPosX(DistanceUnit.INCH), 2) + Math.pow(y - pinpoint.getPosY(DistanceUnit.INCH), 2)); // Calculates the X and Y difference in Position to the center of the goal, then uses Pythagoras Theorem to return the distance to the speed calculator
         double adjacentToPosition = (x - pinpoint.getPosX(DistanceUnit.INCH));
 
-        Angle = Math.toDegrees(Math.asin(adjacentToPosition / hypToPosition));
+        Angle = Math.toDegrees(Math.acos(adjacentToPosition / hypToPosition));
     }
 
     public void shootRedLeft() // Shoots to Left red goal, as per the driver
