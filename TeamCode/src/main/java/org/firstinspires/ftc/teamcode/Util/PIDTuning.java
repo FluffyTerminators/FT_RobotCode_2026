@@ -22,10 +22,10 @@ public final class PIDTuning {
     //public static double velocityKf = 18.0;  // REV 2018-2019 PIDF Kf = 11.7
     public static double velocityKf = 17.8;  // REV 2018-2019 PIDF Kf = 11.7
 
-    public static double PolVelocityKp = 58;
+    public static double PolVelocityKp = 52;
     public static double PolVelocityKi = 0;
-    public static double PolVelocityKd = 15;
-    public static double PolVelocityKf = 28;
+    public static double PolVelocityKd = 13;
+    public static double PolVelocityKf = 24;
 
     public static double NecVelocityKp = 55;
     public static double NecVelocityKi = 0;

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Util.Constants;
 
 @Autonomous(name = "Park-Preload")
 public class ParkPreload extends LinearOpMode {
@@ -83,6 +84,56 @@ public class ParkPreload extends LinearOpMode {
         s_Drive.driveControl(0, 0, 0, 0);
 
         //shoot
+        starttime = getRuntime();
+        s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+        //for (int i = 0; i < 3; i++) {
+        while (!s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true) &&
+                (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.stopPass();
+        }
+        while (getRuntime() < starttime + Constants.Shooter.max_auto_shoot)
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.runPass();
+        }
+            /*while (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed,true) &&
+                    (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.runPass();
+            }*/
+        //}
+        starttime = getRuntime();
+        s_Passthrough.runPass();
+         while (getRuntime() < + 0.5){}
+         s_Passthrough.stopPass();
+
+        s_Shooter.pollenstop();
+        s_Passthrough.stopPass();
+        //shoot
+        starttime = getRuntime();
+        s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+        //for (int i = 0; i < 3; i++) {
+        while (!s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true) &&
+                (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.stopPass();
+        }
+        while (getRuntime() < starttime + Constants.Shooter.max_auto_shoot)
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.runPass();
+        }
+            /*while (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed,true) &&
+                    (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.runPass();
+            }*/
+        //}
 
         starttime = getRuntime();
         s_Drive.driveControl(0, 1, 0, 0);
@@ -91,7 +142,7 @@ public class ParkPreload extends LinearOpMode {
         s_Drive.driveControl(0, 0, 0, 0);
 
         starttime = getRuntime();
-        s_Drive.driveControl(-1, 0.1, 0, 0);
+        s_Drive.driveControl(-1, 0.2, 0, 0);
 
         while (getRuntime() < starttime + 0.8){}
         s_Drive.driveControl(0, 0, 0, 0);

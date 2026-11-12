@@ -73,7 +73,7 @@ public class TeleopTest extends LinearOpMode {
         double f = PIDTuning.PolVelocityKf;
         boolean fLast = false;
         boolean shooting = false;
-        boolean shotLast = false;
+        double shotLast = 0;
 
         telemetry.addData("Status;", "Initialised");
         telemetry.update();
@@ -172,16 +172,20 @@ public class TeleopTest extends LinearOpMode {
                 pollen = true;
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
-                    shotLast = true;
+                    shotLast = getRuntime();
+                } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
+                    s_Passthrough.runPass();
                 }
                 else {
                     s_Passthrough.stopPass();
-                    shotLast = false;
+                    shotLast = 0;
                 }
             } else {
                 shooting = false;
-                shotLast = false;
+                shotLast = 0;
                 s_Shooter.pollenstop();
+
+                double starttime = getRuntime();
             }
             telemetry.addData("polRev;", polShooter.getVelocity());
             if (gamepad2.left_bumper) {
@@ -190,14 +194,18 @@ public class TeleopTest extends LinearOpMode {
                 pollen = false;
                 if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
-                    shotLast = true;
+                    shotLast = getRuntime();
+                } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
+                    s_Passthrough.ejectPass();
+                    while (getRuntime() < + 0.5){}
+                    s_Passthrough.runPass();
                 } else {
                     s_Passthrough.stopPass();
-                    shotLast = false;
+                    shotLast = 0;
                 }
             } else {
                 shooting = false;
-                shotLast = false;
+                shotLast = 0;
                 s_Shooter.nectarstop();
             }
             telemetry.addData("nectRev:", necShooter.getVelocity());

@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Util.Constants;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Util.PIDTuning;
+import org.firstinspires.ftc.teamcode.Util.Constants;
 
 @Autonomous(name = "Flower-Preload")
 public class FlowerPreload extends LinearOpMode {
@@ -65,35 +66,91 @@ public class FlowerPreload extends LinearOpMode {
 
         waitForStart();
         double starttime = getRuntime();
-        s_Drive.driveControl(1, 0, 0, 0);
+        s_Drive.driveControl(1.8, 0, 0, 0);
 
-        while (getRuntime() < starttime + 0.75 ){}
+        while (getRuntime() < starttime + 0.6){}
         s_Drive.driveControl(0, 0, 0, 0);
 
         starttime = getRuntime();
         s_Drive.driveControl(0, 1, 0, 0);
 
-        while (getRuntime() < starttime + 0.3 ){}
+        while (getRuntime() < starttime + 0.15){}
         s_Drive.driveControl(0, 0, 0, 0);
 
+        while (getRuntime() < starttime + 0.25){}
         starttime = getRuntime();
         s_Drive.driveControl(0, 0, 1, 0);
 
-        while (getRuntime() < starttime + 0.2 ){}
+        while (getRuntime() < starttime + 0.3){}
         s_Drive.driveControl(0, 0, 0, 0);
 
         // shoot
+        starttime = getRuntime();
+        s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+        //for (int i = 0; i < 3; i++) {
+            while (!s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true) &&
+                    (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.stopPass();
+            }
+            while (getRuntime() < starttime + Constants.Shooter.max_auto_shoot)
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.runPass();
+            }
+            /*while (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed,true) &&
+                    (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.runPass();
+            }*/
+        //}
+        starttime = getRuntime();
+        s_Passthrough.runPass();
+
+        while (getRuntime() < starttime + 0.5){}
+        s_Passthrough.stopPass();
+
+
+        s_Shooter.pollenstop();
+        s_Passthrough.stopPass();
+        // shoot
+        starttime = getRuntime();
+        s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+        //for (int i = 0; i < 3; i++) {
+        while (!s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true) &&
+                (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.stopPass();
+        }
+        while (getRuntime() < starttime + 3)
+        {
+            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+            s_Passthrough.runPass();
+        }
+            /*while (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed,true) &&
+                    (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+            {
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                s_Passthrough.runPass();
+            }*/
+        //}
 
         starttime = getRuntime();
         s_Drive.driveControl(0, 1, 0, 0);
 
-        while (getRuntime() < starttime + 0.4){}
+        while (getRuntime() < starttime + 0.6){}
         s_Drive.driveControl(0, 0, 0, 0);
 
         starttime = getRuntime();
-        s_Drive.driveControl(-1, 0, 0, 0);
-
-        while (getRuntime() < starttime + 1 ){}
+        s_Drive.driveControl(-1, 0.2, 0, 0);
+        while (getRuntime() < starttime + 0.85 ){}
         s_Drive.driveControl(0, 0, 0, 0);
+
+        starttime = getRuntime();
+        s_Drive.driveControl(0, 1, 0, 0);
+        while (getRuntime() < starttime + 0.5){}
     }
 }
