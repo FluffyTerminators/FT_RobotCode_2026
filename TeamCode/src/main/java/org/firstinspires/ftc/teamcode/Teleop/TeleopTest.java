@@ -7,9 +7,11 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
+import org.firstinspires.ftc.teamcode.Subsystems.FlowerClearer;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Passthrough;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
@@ -31,11 +33,13 @@ public class TeleopTest extends LinearOpMode {
     public DcMotorEx necShooter;
     public DcMotorEx passthrough;
     public GoBildaPinpointDriver pinpoint;
+    public Servo FwServo;
     public Drive s_Drive;
     public Intake s_Intake;
     public Passthrough s_Passthrough;
     public Shooter s_Shooter;
     public AutomaticShoot s_AutoShoot;
+    public FlowerClearer s_FwCl;
 
     public void runOpMode() throws InterruptedException {
         bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
@@ -47,12 +51,14 @@ public class TeleopTest extends LinearOpMode {
         necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
         passthrough = hardwareMap.get(DcMotorEx.class, "Passthrough");
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
+        FwServo = hardwareMap.get(Servo.class, "FWServo");
 
         s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
         s_Intake = new Intake(intake);
         s_Passthrough = new Passthrough(passthrough);
         s_Shooter = new Shooter(polShooter, necShooter);
         s_AutoShoot = new AutomaticShoot(pinpoint);
+        s_FwCl = new FlowerClearer(FwServo);
 
         pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -104,7 +110,7 @@ public class TeleopTest extends LinearOpMode {
                 s_Drive.isFieldCentricMode(getRuntime());
             }
 
-            if (gamepad1.y) {
+         /*   if (gamepad1.y) {
                 if (!pLast) {
                     if (gamepad1.left_bumper) {
                         p -= 1;
@@ -154,12 +160,12 @@ public class TeleopTest extends LinearOpMode {
                 }
             } else {
                 fLast = false;
-            }
+            } */
 
-            telemetry.addData("P;", p);
-            telemetry.addData("I;", i);
-            telemetry.addData("D;", d);
-            telemetry.addData("F;", f);
+          //  telemetry.addData("P;", p);
+            //telemetry.addData("I;", i);
+        //    telemetry.addData("D;", d);
+          //  telemetry.addData("F;", f);
 
             PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
 
@@ -220,11 +226,16 @@ public class TeleopTest extends LinearOpMode {
 
             if (gamepad2.right_trigger > 0.1) {
                 s_Intake.runIntake();
-            } else if (gamepad2.a) {
+            } else if (gamepad2.x) {
                 s_Intake.ejectIntake();
             } else {
                 s_Intake.stopIntake();
             }
+
+            if (gamepad2.y){
+                s_FwCl.FlowerUp();
+            } else if (gamepad2.a)
+                s_FwCl.FlowerDown();
 
             telemetry.addData("X:",pinpoint.getPosition().getX(DistanceUnit.INCH));
             telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));

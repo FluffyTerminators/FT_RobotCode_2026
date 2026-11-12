@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Util.Constants;
 
 @TeleOp(name = "BioTest")
 public class Test extends LinearOpMode {
+    public Servo FwServo;
     public DcMotor bLDrive;
     public DcMotor bRDrive;
     public DcMotor fLDrive;
@@ -41,6 +43,7 @@ public class Test extends LinearOpMode {
         necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
         passthrough = hardwareMap.get(DcMotorEx.class, "Passthrough");
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
+        FwServo = hardwareMap.get(Servo.class, "FWServo");
 
         s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
         s_Intake = new Intake(intake);
@@ -66,6 +69,9 @@ public class Test extends LinearOpMode {
             } else {
                 necShooter.setPower(0);
             }
+             FwServo.setPosition(gamepad2.left_stick_x);
+            telemetry.addData("Servopos", FwServo.getPosition());
+            telemetry.update();
         }
 
     }
