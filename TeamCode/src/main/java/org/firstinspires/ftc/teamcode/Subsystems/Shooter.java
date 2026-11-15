@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Util.PIDTuning;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
@@ -33,14 +32,7 @@ public class Shooter {
     {
         m_shooterNec.setVelocity(revspeed);
     }
-    public void pollenEject()
-    {
-        m_shooterPol.setPower(1);
-    }
-    public void necterEject()
-    {
-        m_shooterNec.setPower(-1);
-    }
+
     public boolean speedCheck(double shooterTarget, boolean pollen)
     {
         if (pollen)

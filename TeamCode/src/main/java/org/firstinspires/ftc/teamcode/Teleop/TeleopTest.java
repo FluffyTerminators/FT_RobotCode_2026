@@ -3,13 +3,11 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.FlowerClearer;
@@ -70,7 +68,6 @@ public class TeleopTest extends LinearOpMode {
         boolean resetLast = false;
         double heading;
         boolean pollen = true;
-        double testRev = 0;
         double p = PIDTuning.PolVelocityKp;
         boolean pLast = false;
         double i = PIDTuning.PolVelocityKi;
@@ -101,7 +98,6 @@ public class TeleopTest extends LinearOpMode {
             }
             pinpoint.update();
 
-            double robotYaw = pinpoint.getHeading(AngleUnit.DEGREES);
             heading = Math.toRadians(pinpoint.getPosition().getHeading(AngleUnit.DEGREES) + Constants.Drive.headingOffset);
 
             telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
@@ -162,7 +158,6 @@ public class TeleopTest extends LinearOpMode {
             } else {
                 fLast = false;
             }
-
             telemetry.addData("P;", p);
             telemetry.addData("I;", i);
             telemetry.addData("D;", d);
@@ -181,7 +176,6 @@ public class TeleopTest extends LinearOpMode {
             }
             if (gamepad2.right_bumper) {
                 s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-                shooting = true;
                 pollen = true;
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
@@ -196,11 +190,8 @@ public class TeleopTest extends LinearOpMode {
 
                 }
             } else {
-                shooting = false;
                 shotLast = 0;
                 s_Shooter.pollenstop();
-
-                double starttime = getRuntime();
             }
             telemetry.addData("polRev;", polShooter.getVelocity());
             if (gamepad2.left_bumper) {
@@ -219,7 +210,6 @@ public class TeleopTest extends LinearOpMode {
                     shotLast = getRuntime();
                 } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
                     s_Passthrough.ejectPass();
-                    while (getRuntime() < + 0.5){}
                     s_Passthrough.runPass();
                 } else {
                     s_Passthrough.stopPass();
