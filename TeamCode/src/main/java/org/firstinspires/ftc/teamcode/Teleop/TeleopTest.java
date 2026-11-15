@@ -111,7 +111,7 @@ public class TeleopTest extends LinearOpMode {
                 s_Drive.isFieldCentricMode(getRuntime());
             }
 
-         /*   if (gamepad1.y) {
+            if (gamepad1.y) {
                 if (!pLast) {
                     if (gamepad1.left_bumper) {
                         p -= 1;
@@ -161,12 +161,12 @@ public class TeleopTest extends LinearOpMode {
                 }
             } else {
                 fLast = false;
-            } */
+            }
 
-          //  telemetry.addData("P;", p);
-            //telemetry.addData("I;", i);
-        //    telemetry.addData("D;", d);
-          //  telemetry.addData("F;", f);
+            telemetry.addData("P;", p);
+            telemetry.addData("I;", i);
+            telemetry.addData("D;", d);
+            telemetry.addData("F;", f);
 
             PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
 
@@ -180,7 +180,7 @@ public class TeleopTest extends LinearOpMode {
                 telemetry.addData("PollenShooterReady", "no");
             }
             if (gamepad2.right_bumper) {
-                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed1);
+                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
                 shooting = true;
                 pollen = true;
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
