@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.FlowerClearer;
@@ -110,7 +111,7 @@ public class TeleopTest extends LinearOpMode {
                 s_Drive.isFieldCentricMode(getRuntime());
             }
 
-         /*   if (gamepad1.y) {
+            if (gamepad1.y) {
                 if (!pLast) {
                     if (gamepad1.left_bumper) {
                         p -= 1;
@@ -160,24 +161,31 @@ public class TeleopTest extends LinearOpMode {
                 }
             } else {
                 fLast = false;
-            } */
+            }
 
-          //  telemetry.addData("P;", p);
-            //telemetry.addData("I;", i);
-        //    telemetry.addData("D;", d);
-          //  telemetry.addData("F;", f);
+            telemetry.addData("P;", p);
+            telemetry.addData("I;", i);
+            telemetry.addData("D;", d);
+            telemetry.addData("F;", f);
 
             PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
 
             polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
 
             s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
+            if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, true)){
+                telemetry.addData("PollenShooterReady", "yes");
+            }
+            else{
+                telemetry.addData("PollenShooterReady", "no");
+            }
             if (gamepad2.right_bumper) {
-                shooting = true;
                 s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                shooting = true;
                 pollen = true;
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
+                    telemetry.addData("PollenShooterReady", "yes");
                     shotLast = getRuntime();
                 } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
                     s_Passthrough.runPass();
@@ -185,6 +193,7 @@ public class TeleopTest extends LinearOpMode {
                 else {
                     s_Passthrough.stopPass();
                     shotLast = 0;
+
                 }
             } else {
                 shooting = false;
@@ -198,8 +207,15 @@ public class TeleopTest extends LinearOpMode {
                 shooting = true;
                 s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
                 pollen = false;
+                if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
+                    telemetry.addData("NectarShooterReady", "yes");
+                }
+                else{
+                    telemetry.addData("NectarShooterReady", "no");
+                }
                 if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
+
                     shotLast = getRuntime();
                 } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
                     s_Passthrough.ejectPass();
@@ -241,8 +257,7 @@ public class TeleopTest extends LinearOpMode {
             telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
         }
     }
-//hello
-}
+    }
 
 
 

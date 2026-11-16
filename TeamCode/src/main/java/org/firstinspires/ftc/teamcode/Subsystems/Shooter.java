@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Util.PIDTuning;
 import org.firstinspires.ftc.teamcode.Util.Constants;
 
@@ -48,11 +50,11 @@ public class Shooter {
         {
             shooterSpeed = m_shooterNec.getVelocity();
         }
-
         if ((shooterSpeed > (shooterTarget - Constants.Shooter.shooter_speed_tolerance))
                 && (shooterSpeed <(shooterTarget + Constants.Shooter.shooter_speed_tolerance)))
         {
             shooterReady = true;
+
         } else
         {
             shooterReady = false;
