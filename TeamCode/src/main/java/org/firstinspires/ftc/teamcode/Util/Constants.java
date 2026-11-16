@@ -13,7 +13,7 @@ public class Constants
     }
     public static final class Shooter {
         public static final double shooter_speed_tolerance = 21;
-        public static final int pollen_shooter_speed = -720;
+        public static final int pollen_shooter_speed = -620;
         public static final int nectar_shooter_speed = 760;
         public static final double min_shoot_feed = 0.2;
         public static final double max_auto_shoot = 5.0;
