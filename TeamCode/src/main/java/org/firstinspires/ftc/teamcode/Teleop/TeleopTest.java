@@ -222,8 +222,6 @@ public class TeleopTest extends LinearOpMode {
 
                     shotLast = getRuntime();
                 } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
-                    s_Passthrough.ejectPass();
-                    while (getRuntime() < + 0.5){}
                     s_Passthrough.runPass();
                 } else {
                     s_Passthrough.stopPass();
