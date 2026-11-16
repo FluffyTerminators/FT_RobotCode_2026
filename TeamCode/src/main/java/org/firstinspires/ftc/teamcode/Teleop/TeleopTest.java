@@ -173,7 +173,7 @@ public class TeleopTest extends LinearOpMode {
             polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
 
             s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
-            if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, true)){
+            if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true)){
                 telemetry.addData("PollenShooterReady", "yes");
             }
             else{
