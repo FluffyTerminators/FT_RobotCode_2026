@@ -173,15 +173,22 @@ public class TeleopTest extends LinearOpMode {
             polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
 
             s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
-            if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, true)){
+            if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true)){
                 telemetry.addData("PollenShooterReady", "yes");
             }
             else{
                 telemetry.addData("PollenShooterReady", "no");
             }
+            // Work out "are we shooting?" once per loop from both bumpers.
+            // Previously each bumper's else-branch reset shooting/shotLast, so
+            // holding one bumper had its runPass() undone every loop by the
+            // other bumper's else-branch (-> stopPass() below = jitter).
+            shooting = gamepad2.right_bumper || gamepad2.left_bumper;
+            if (!shooting) {
+                shotLast = 0;
+            }
             if (gamepad2.right_bumper) {
                 s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-                shooting = true;
                 pollen = true;
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
                     s_Passthrough.runPass();
@@ -196,15 +203,12 @@ public class TeleopTest extends LinearOpMode {
 
                 }
             } else {
-                shooting = false;
-                shotLast = 0;
                 s_Shooter.pollenstop();
 
                 double starttime = getRuntime();
             }
             telemetry.addData("polRev;", polShooter.getVelocity());
             if (gamepad2.left_bumper) {
-                shooting = true;
                 s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
                 pollen = false;
                 if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
@@ -218,16 +222,12 @@ public class TeleopTest extends LinearOpMode {
 
                     shotLast = getRuntime();
                 } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
-                    s_Passthrough.ejectPass();
-                    while (getRuntime() < + 0.5){}
                     s_Passthrough.runPass();
                 } else {
                     s_Passthrough.stopPass();
                     shotLast = 0;
                 }
             } else {
-                shooting = false;
-                shotLast = 0;
                 s_Shooter.nectarstop();
             }
             telemetry.addData("nectRev:", necShooter.getVelocity());
