@@ -14,8 +14,7 @@ public class Intake {
     }
     public void ejectIntake()
     {
-        m_Intake.setPower(1
-        );
+        m_Intake.setPower(0.8);
     }
     public void stopIntake()
     {

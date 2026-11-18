@@ -45,7 +45,7 @@ public class Test extends LinearOpMode {
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
         FwServo = hardwareMap.get(Servo.class, "FWServo");
 
-        s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive);
+        s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive, pinpoint);
         s_Intake = new Intake(intake);
         s_Passthrough = new Passthrough(passthrough);
         s_Shooter = new Shooter(polShooter, necShooter);

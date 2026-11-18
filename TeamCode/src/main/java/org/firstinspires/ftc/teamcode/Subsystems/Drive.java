@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Util.UtilFunctions;
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -13,6 +15,7 @@ public class Drive
     private DcMotor m_FRDrive;
     private DcMotor m_BLDrive;
     private DcMotor m_BRDrive;
+    private GoBildaPinpointDriver pinpoint;
     private double forward = 0;
     private double strafe = 0;
     private double turn = 0;
@@ -30,12 +33,13 @@ public class Drive
     private int BREncoderLast = 0;
     private boolean activeBrake = true;
 
-    public Drive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight)
+    public Drive(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight,GoBildaPinpointDriver pinpoint)
     {
         m_FLDrive = frontLeft;
         m_FRDrive = frontRight;
         m_BLDrive = backLeft;
         m_BRDrive = backRight;
+        this.pinpoint = pinpoint;
 
         m_FLDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         m_FRDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -76,6 +80,26 @@ public class Drive
         {
             brakeMode = mode;
         }
+
+    public boolean driveToAbsolutePosition(Pose2D target)
+    {
+        return true;
+    }
+
+    public boolean driveToRelativePosition(Pose2D target)
+    {
+        return true;
+    }
+
+    public boolean turnToAbsoluteAngle(double targetHeading)
+    {
+        return true;
+    }
+
+    public boolean turnToRelativeAngle(double targetHeading)
+    {
+        return true;
+    }
 
     public void driveControl(double forwardInput, double strafeInput, double turnInput, double heading)
     {
