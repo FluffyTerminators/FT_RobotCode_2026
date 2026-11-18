@@ -10,6 +10,9 @@ public class Shooter {
     public DcMotorEx m_shooterPol;
     public DcMotorEx m_shooterNec;
     private double shooterSpeed;
+    public double getShooterSpeed() {
+        return shooterSpeed;
+    }
     private boolean shooterReady;
     public Shooter(DcMotorEx pollenMotor, DcMotorEx necterMotor)
     {
@@ -61,5 +64,6 @@ public class Shooter {
         }
 
         return shooterReady;
+
     }
 }
