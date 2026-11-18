@@ -291,7 +291,9 @@ public class TeleopTest extends LinearOpMode {
 
                 telemetry.addData("X:",pinpoint.getPosition().getX(DistanceUnit.INCH));
                 telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
-                panels.debug("Shooter Speed", s_Shooter.getShooterSpeed());
+                // addData (not debug) so the line is "Shooter Speed: <n>" -- the
+                // Panels Graph widget only parses "name: number" on a single line.
+                panels.addData("Shooter Speed", s_Shooter.getShooterSpeed());
                 panels.update();
             }
         }
