@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Util.UtilFunctions;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -76,6 +77,26 @@ public class Drive
         {
             brakeMode = mode;
         }
+
+    public void driveToAbsolutePosition(Pose2D target)
+    {
+
+    }
+
+    public void driveToRelativePosition(Pose2D target)
+    {
+
+    }
+
+    public void turnToAbsoluteAngle(double targetHeading)
+    {
+
+    }
+
+    public void turnToRelativeAngle(double targetHeading)
+    {
+
+    }
 
     public void driveControl(double forwardInput, double strafeInput, double turnInput, double heading)
     {

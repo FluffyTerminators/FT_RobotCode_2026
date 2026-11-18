@@ -287,6 +287,3 @@ public class TeleopTest extends LinearOpMode {
             }
         }
     }
-
-
-

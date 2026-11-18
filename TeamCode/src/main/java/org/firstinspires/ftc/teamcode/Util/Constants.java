@@ -6,7 +6,7 @@ public class Constants
     {
         public static final double brake = 0.5;
         public static final double headingOffset = 0;
-        public static final double activeBrakeStep = 0.005;
+        public static final double activeBrakeStep = 0.01;
     }
     public static final class Controls{
         public static final double deadband = 0.05;
