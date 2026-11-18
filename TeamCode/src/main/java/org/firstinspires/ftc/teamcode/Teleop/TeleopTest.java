@@ -257,7 +257,4 @@ public class TeleopTest extends LinearOpMode {
             telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
         }
     }
-    }
-
-
-
+}
