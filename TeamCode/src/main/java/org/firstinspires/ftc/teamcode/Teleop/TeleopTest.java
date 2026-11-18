@@ -81,6 +81,7 @@ public class TeleopTest extends LinearOpMode {
             boolean fLast = false;
             boolean shooting = false;
             double shotLast = 0;
+            int Temp_Nec_shoot_speed = Constants.Shooter.nectar_shooter_speed;
 
             telemetry.addData("Status;", "Initialised");
             telemetry.update();
@@ -124,7 +125,7 @@ public class TeleopTest extends LinearOpMode {
                     pLast = false;
                 }
 
-                if (gamepad1.b) {
+                /*if (gamepad1.b) {
                     if (!iLast) {
                         if (gamepad1.left_bumper) {
                             i -= 0.1;
@@ -148,7 +149,25 @@ public class TeleopTest extends LinearOpMode {
                     }
                 } else {
                     dLast = false;
+                }*/
+                if (gamepad1.b) {
+                    if (!iLast) {
+                        Temp_Nec_shoot_speed -= 20;
+                        iLast = true;
+                    }
+                } else {
+                    iLast = false;
                 }
+
+                if (gamepad1.a) {
+                    if (!dLast) {
+                        Temp_Nec_shoot_speed += 20;
+                        dLast = true;
+                    }
+                } else {
+                    dLast = false;
+                }
+
 
                 if (gamepad1.x) {
                     if (!fLast) {
@@ -163,6 +182,7 @@ public class TeleopTest extends LinearOpMode {
                     fLast = false;
                 }
 
+                telemetry.addData("nectar target speed",Temp_Nec_shoot_speed);
                 telemetry.addData("P;", p);
                 telemetry.addData("I;", i);
                 telemetry.addData("D;", d);
@@ -209,15 +229,18 @@ public class TeleopTest extends LinearOpMode {
                 }
                 telemetry.addData("polRev;", polShooter.getVelocity());
                 if (gamepad2.left_bumper) {
-                    s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
+                    //s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
+                    s_Shooter.necterRev(Temp_Nec_shoot_speed);
                     pollen = false;
-                    if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
+                    //if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
+                    if (s_Shooter.speedCheck(Temp_Nec_shoot_speed, false)){
                         telemetry.addData("NectarShooterReady", "yes");
                     }
                     else{
                         telemetry.addData("NectarShooterReady", "no");
                     }
-                    if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
+                    //if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
+                    if (s_Shooter.speedCheck(Temp_Nec_shoot_speed, pollen))/* && !shotLast)*/ {
                         s_Passthrough.runPass();
 
                         shotLast = getRuntime();
@@ -253,7 +276,7 @@ public class TeleopTest extends LinearOpMode {
                 } else if (gamepad2.a){
                     s_FwCl.FlowerDown();}
 
-                if (gamepad2.b) {
+                if (gamepad2.dpad_right) {
                     s_FwCl.flowerJitter(getRuntime());
                 }
 
