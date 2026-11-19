@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.bylazar.configurables.annotations.Configurable;
-import com.bylazar.panels.Panels;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,8 +10,6 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import com.bylazar.telemetry.TelemetryManager;
-import com.bylazar.telemetry.PanelsTelemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.FlowerClearer;
@@ -26,6 +22,10 @@ import org.firstinspires.ftc.teamcode.Util.Constants;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Util.PIDTuning;
+
+import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 
 @Configurable
 @TeleOp(name = "BioTele")
@@ -47,226 +47,254 @@ public class TeleopTest extends LinearOpMode {
     public AutomaticShoot s_AutoShoot;
     public FlowerClearer s_FwCl;
 
-    public void runOpMode() throws InterruptedException {
-        bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
-        bRDrive = hardwareMap.get(DcMotor.class, "BRDrive");
-        fLDrive = hardwareMap.get(DcMotor.class, "FLDrive");
-        fRDrive = hardwareMap.get(DcMotor.class, "FRDrive");
-        intake = hardwareMap.get(DcMotorEx.class, "Intake");
-        polShooter = hardwareMap.get(DcMotorEx.class, "PollenShooter");
-        necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
-        passthrough = hardwareMap.get(DcMotorEx.class, "Passthrough");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
-        FwServo = hardwareMap.get(Servo.class, "FWServo");
+        public void runOpMode() throws InterruptedException {
+            bLDrive = hardwareMap.get(DcMotor.class, "BLDrive");
+            bRDrive = hardwareMap.get(DcMotor.class, "BRDrive");
+            fLDrive = hardwareMap.get(DcMotor.class, "FLDrive");
+            fRDrive = hardwareMap.get(DcMotor.class, "FRDrive");
+            intake = hardwareMap.get(DcMotorEx.class, "Intake");
+            polShooter = hardwareMap.get(DcMotorEx.class, "PollenShooter");
+            necShooter = hardwareMap.get(DcMotorEx.class, "NectarShooter");
+            passthrough = hardwareMap.get(DcMotorEx.class, "Passthrough");
+            pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "Pinpoint");
+            FwServo = hardwareMap.get(Servo.class, "FWServo");
 
-        s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive, pinpoint);
-        s_Intake = new Intake(intake);
-        s_Passthrough = new Passthrough(passthrough);
-        s_Shooter = new Shooter(polShooter, necShooter);
-        s_AutoShoot = new AutomaticShoot(pinpoint);
-        s_FwCl = new FlowerClearer(FwServo);
+            s_Drive = new Drive(fLDrive, fRDrive, bLDrive, bRDrive, pinpoint);
+            s_Intake = new Intake(intake);
+            s_Passthrough = new Passthrough(passthrough);
+            s_Shooter = new Shooter(polShooter, necShooter);
+            s_AutoShoot = new AutomaticShoot(pinpoint);
+            s_FwCl = new FlowerClearer(FwServo);
 
-        TelemetryManager panels = PanelsTelemetry.INSTANCE.getTelemetry();
+            TelemetryManager panels = PanelsTelemetry.INSTANCE.getTelemetry();
 
-        pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        pinpoint.setHeading(0, AngleUnit.DEGREES);
-        pinpoint.update();
-
-        boolean resetLast = false;
-        double heading;
-        boolean pollen = true;
-        double testRev = 0;
-        double p = PIDTuning.PolVelocityKp;
-        boolean pLast = false;
-        double i = PIDTuning.PolVelocityKi;
-        boolean iLast = false;
-        double d = PIDTuning.PolVelocityKd;
-        boolean dLast = false;
-        double f = PIDTuning.PolVelocityKf;
-        boolean fLast = false;
-        boolean shooting = false;
-        double shotLast = 0;
-
-        telemetry.addData("Status;", "Initialised");
-        telemetry.update();
-        waitForStart();
-
-        while (opModeIsActive()) {
-            telemetry.addData("Status;", "Running");
-            telemetry.update();
-
-            if (gamepad1.left_bumper) {
-                if (!resetLast) {
-                    //imu.resetYaw();
-                    pinpoint.setHeading(0, AngleUnit.DEGREES);
-                    resetLast = true;
-                }
-            } else {
-                resetLast = false;
-            }
+            pinpoint.setOffsets(100, -25, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
+            pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+            pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+            pinpoint.setHeading(0, AngleUnit.DEGREES);
             pinpoint.update();
 
-            double robotYaw = pinpoint.getHeading(AngleUnit.DEGREES);
-            heading = Math.toRadians(pinpoint.getPosition().getHeading(AngleUnit.DEGREES) + Constants.Drive.headingOffset);
+            boolean resetLast = false;
+            double heading;
+            boolean pollen = true;
+            double testRev = 0;
+            double p = PIDTuning.PolVelocityKp;
+            boolean pLast = false;
+            double i = PIDTuning.PolVelocityKi;
+            boolean iLast = false;
+            double d = PIDTuning.PolVelocityKd;
+            boolean dLast = false;
+            double f = PIDTuning.PolVelocityKf;
+            boolean fLast = false;
+            boolean shooting = false;
+            double shotLast = 0;
+            int Temp_Nec_shoot_speed = Constants.Shooter.nectar_shooter_speed;
 
-            telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
-            telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
-            telemetry.addData("Heading", Math.toDegrees(heading));
-            if (gamepad1.b) {
-                s_Drive.isFieldCentricMode(getRuntime());
-            }
+            telemetry.addData("Status;", "Initialised");
+            telemetry.update();
+            waitForStart();
 
-            if (gamepad1.y) {
-                if (!pLast) {
-                    if (gamepad1.left_bumper) {
-                        p -= 1;
-                    } else {
-                        p += 1;
+            while (opModeIsActive()) {
+                telemetry.addData("Status;", "Running");
+                telemetry.update();
+
+                if (gamepad1.left_bumper) {
+                    if (!resetLast) {
+                        //imu.resetYaw();
+                        pinpoint.setHeading(0, AngleUnit.DEGREES);
+                        resetLast = true;
                     }
-                    pLast = true;
+                } else {
+                    resetLast = false;
                 }
-            } else {
-                pLast = false;
-            }
+                pinpoint.update();
 
-            if (gamepad1.b) {
-                if (!iLast) {
-                    if (gamepad1.left_bumper) {
-                        i -= 0.1;
-                    } else {
-                        i += 0.1;
+                double robotYaw = pinpoint.getHeading(AngleUnit.DEGREES);
+                heading = Math.toRadians(pinpoint.getPosition().getHeading(AngleUnit.DEGREES) + Constants.Drive.headingOffset);
+
+                telemetry.addData("PinPoint Status", pinpoint.getDeviceStatus());
+                telemetry.addData("Heading Scalar", pinpoint.getYawScalar());
+                telemetry.addData("Heading", Math.toDegrees(heading));
+                if (gamepad1.b) {
+                    s_Drive.isFieldCentricMode(getRuntime());
+                }
+
+                if (gamepad1.y) {
+                    if (!pLast) {
+                        if (gamepad1.left_bumper) {
+                            p -= 1;
+                        } else {
+                            p += 1;
+                        }
+                        pLast = true;
                     }
-                    iLast = true;
+                } else {
+                    pLast = false;
                 }
-            } else {
-                iLast = false;
-            }
 
-            if (gamepad1.a) {
-                if (!dLast) {
-                    if (gamepad1.left_bumper) {
-                        d -= 0.1;
-                    } else {
-                        d += 0.1;
+                /*if (gamepad1.b) {
+                    if (!iLast) {
+                        if (gamepad1.left_bumper) {
+                            i -= 0.1;
+                        } else {
+                            i += 0.1;
+                        }
+                        iLast = true;
                     }
-                    dLast = true;
+                } else {
+                    iLast = false;
                 }
-            } else {
-                dLast = false;
-            }
 
-            if (gamepad1.x) {
-                if (!fLast) {
-                    if (gamepad1.left_bumper) {
-                        f -= 1;
-                    } else {
-                        f += 1;
+                if (gamepad1.a) {
+                    if (!dLast) {
+                        if (gamepad1.left_bumper) {
+                            d -= 0.1;
+                        } else {
+                            d += 0.1;
+                        }
+                        dLast = true;
                     }
-                    fLast = true;
+                } else {
+                    dLast = false;
+                }*/
+                if (gamepad1.b) {
+                    if (!iLast) {
+                        Temp_Nec_shoot_speed -= 20;
+                        iLast = true;
+                    }
+                } else {
+                    iLast = false;
                 }
-            } else {
-                fLast = false;
-            }
 
-            telemetry.addData("P;", p);
-            telemetry.addData("I;", i);
-            telemetry.addData("D;", d);
-            telemetry.addData("F;", f);
+                if (gamepad1.a) {
+                    if (!dLast) {
+                        Temp_Nec_shoot_speed += 20;
+                        dLast = true;
+                    }
+                } else {
+                    dLast = false;
+                }
 
-            PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
 
-            polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
+                if (gamepad1.x) {
+                    if (!fLast) {
+                        if (gamepad1.left_bumper) {
+                            f -= 1;
+                        } else {
+                            f += 1;
+                        }
+                        fLast = true;
+                    }
+                } else {
+                    fLast = false;
+                }
 
-            s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
-            if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true)){
-                telemetry.addData("PollenShooterReady", "yes");
-            }
-            else{
-                telemetry.addData("PollenShooterReady", "no");
-            }
-            // Work out "are we shooting?" once per loop from both bumpers.
-            // Previously each bumper's else-branch reset shooting/shotLast, so
-            // holding one bumper had its runPass() undone every loop by the
-            // other bumper's else-branch (-> stopPass() below = jitter).
-            shooting = gamepad2.right_bumper || gamepad2.left_bumper;
-            if (!shooting) {
-                shotLast = 0;
-            }
-            if (gamepad2.right_bumper) {
-                s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-                pollen = true;
-                if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
-                    s_Passthrough.runPass();
+                telemetry.addData("nectar target speed",Temp_Nec_shoot_speed);
+                telemetry.addData("P;", p);
+                telemetry.addData("I;", i);
+                telemetry.addData("D;", d);
+                telemetry.addData("F;", f);
+
+                PIDFCoefficients test = new PIDFCoefficients(p, i, d, f);
+
+                polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
+
+                s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
+                if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true)){
                     telemetry.addData("PollenShooterReady", "yes");
-                    shotLast = getRuntime();
-                } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
-                    s_Passthrough.runPass();
-                }
-                else {
-                    s_Passthrough.stopPass();
-                    shotLast = 0;
-
-                }
-            } else {
-                s_Shooter.pollenstop();
-
-                double starttime = getRuntime();
-            }
-            telemetry.addData("polRev;", polShooter.getVelocity());
-            if (gamepad2.left_bumper) {
-                s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
-                pollen = false;
-                if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
-                    telemetry.addData("NectarShooterReady", "yes");
                 }
                 else{
-                    telemetry.addData("NectarShooterReady", "no");
+                    telemetry.addData("PollenShooterReady", "no");
                 }
-                if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
-                    s_Passthrough.runPass();
-
-                    shotLast = getRuntime();
-                } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
-                    s_Passthrough.runPass();
-                } else {
-                    s_Passthrough.stopPass();
+                // Work out "are we shooting?" once per loop from both bumpers.
+                // Previously each bumper's else-branch reset shooting/shotLast, so
+                // holding one bumper had its runPass() undone every loop by the
+                // other bumper's else-branch (-> stopPass() below = jitter).
+                shooting = gamepad2.right_bumper || gamepad2.left_bumper;
+                if (!shooting) {
                     shotLast = 0;
                 }
-            } else {
-                s_Shooter.nectarstop();
+                if (gamepad2.right_bumper) {
+                    s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
+                    pollen = true;
+                    if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, pollen))/* && !shotLast)*/ {
+                        s_Passthrough.runPass();
+                        telemetry.addData("PollenShooterReady", "yes");
+                        shotLast = getRuntime();
+                    } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
+                        s_Passthrough.runPass();
+                    }
+                    else {
+                        s_Passthrough.stopPass();
+                        shotLast = 0;
+
+                    }
+                } else {
+                    s_Shooter.pollenstop();
+
+                    double starttime = getRuntime();
+                }
+                telemetry.addData("polRev;", polShooter.getVelocity());
+                if (gamepad2.left_bumper) {
+                    //s_Shooter.necterRev(Constants.Shooter.nectar_shooter_speed);
+                    s_Shooter.necterRev(Temp_Nec_shoot_speed);
+                    pollen = false;
+                    //if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, false)){
+                    if (s_Shooter.speedCheck(Temp_Nec_shoot_speed, false)){
+                        telemetry.addData("NectarShooterReady", "yes");
+                    }
+                    else{
+                        telemetry.addData("NectarShooterReady", "no");
+                    }
+                    //if (s_Shooter.speedCheck(Constants.Shooter.nectar_shooter_speed, pollen))/* && !shotLast)*/ {
+                    if (s_Shooter.speedCheck(Temp_Nec_shoot_speed, pollen))/* && !shotLast)*/ {
+                        s_Passthrough.runPass();
+
+                        shotLast = getRuntime();
+                    } else if (getRuntime() < shotLast + Constants.Shooter.min_shoot_feed) {
+                        s_Passthrough.runPass();
+                    } else {
+                        s_Passthrough.stopPass();
+                        shotLast = 0;
+                    }
+                } else {
+                    s_Shooter.nectarstop();
+                }
+                telemetry.addData("nectRev:", necShooter.getVelocity());
+
+                if (gamepad2.dpad_up) {
+                    s_Passthrough.runPass();
+                } else if (gamepad2.dpad_down) {
+                    s_Passthrough.ejectPass();
+                } else if (!shooting) {
+                    s_Passthrough.stopPass();
+                }
+
+                if (gamepad2.right_trigger > 0.1) {
+                    s_Intake.runIntake();
+                } else if (gamepad2.x) {
+                    s_Intake.ejectIntake();
+                } else {
+                    s_Intake.stopIntake();
+                }
+
+                if (gamepad2.y){
+                    s_FwCl.FlowerUp();
+                } else if (gamepad2.a){
+                    s_FwCl.FlowerDown();}
+
+                if (gamepad2.dpad_right) {
+                    s_FwCl.flowerJitter(getRuntime());
+                }
+
+
+
+                telemetry.addData("X:",pinpoint.getPosition().getX(DistanceUnit.INCH));
+                telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
+                // addData (not debug) so the line is "Shooter Speed: <n>" -- the
+                // Panels Graph widget only parses "name: number" on a single line.
+                panels.addData("Shooter Speed", s_Shooter.getShooterSpeed());
+                panels.update();
             }
-            telemetry.addData("nectRev:", necShooter.getVelocity());
-
-            if (gamepad2.dpad_up) {
-                s_Passthrough.runPass();
-            } else if (gamepad2.dpad_down) {
-                s_Passthrough.ejectPass();
-            } else if (!shooting) {
-                s_Passthrough.stopPass();
-            }
-
-            if (gamepad2.right_trigger > 0.1) {
-                s_Intake.runIntake();
-            } else if (gamepad2.x) {
-                s_Intake.ejectIntake();
-            } else {
-                s_Intake.stopIntake();
-            }
-
-            if (gamepad2.y){
-                s_FwCl.FlowerUp();
-            } else if (gamepad2.a)
-                s_FwCl.FlowerDown();
-
-            telemetry.addData("X:",pinpoint.getPosition().getX(DistanceUnit.INCH));
-            telemetry.addData("Y:",pinpoint.getPosition().getY(DistanceUnit.INCH));
-            panels.debug("Shooter Speed", s_Shooter.getShooterSpeed());
-            panels.update();
         }
     }
-    }
-
-
-
