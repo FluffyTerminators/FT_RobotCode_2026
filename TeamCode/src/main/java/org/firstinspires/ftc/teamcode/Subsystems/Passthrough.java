@@ -13,11 +13,11 @@ public class Passthrough {
     }
     public void runPass()
     {
-         se_Pass.setPower(-Constants.Passthrough.passthrough_Power);
+         se_Pass.setPower(Constants.Passthrough.passthrough_Power);
     }
     public void ejectPass()
     {
-        se_Pass.setPower(Constants.Passthrough.passthrough_Power);
+        se_Pass.setPower(-Constants.Passthrough.passthrough_Power);
     }
     public void stopPass()
     {

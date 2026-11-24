@@ -11,9 +11,6 @@ public class FlowerClearer {
     public void FlowerUp(){
         FWServo.setPosition(0.44);
     }
-    public void FlowerDown(){
-        FWServo.setPosition(0);
-    }
 
     public void flowerJitter(double time)
     {

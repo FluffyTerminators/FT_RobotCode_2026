@@ -190,8 +190,8 @@ public class Drive
                 double sinHeading = Math.sin(heading);
                 double cosHeading = Math.cos(heading);
 
-                strafe = rawStrafe * cosHeading + rawForward * sinHeading;
-                forward = rawForward * cosHeading - rawStrafe * sinHeading;
+                strafe = (rawStrafe * cosHeading) + (rawForward * sinHeading);
+                forward = (rawForward * cosHeading) - (rawStrafe * sinHeading);
             } else {
                 forward = rawForward;
                 strafe = rawStrafe;

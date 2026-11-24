@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.Util.Constants;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Util.PIDTuning;
 
+import com.bylazar.panels.Panels;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
@@ -73,6 +74,7 @@ public class TeleopTest extends LinearOpMode {
             pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
             pinpoint.setHeading(0, AngleUnit.DEGREES);
             pinpoint.update();
+            passthrough.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             boolean resetLast = false;
             double heading;
@@ -200,6 +202,7 @@ public class TeleopTest extends LinearOpMode {
                 polShooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, test);
 
                 s_Drive.driveControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, pinpoint.getHeading(AngleUnit.RADIANS));
+
                 if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true)){
                     telemetry.addData("PollenShooterReady", "yes");
                 }
@@ -281,9 +284,6 @@ public class TeleopTest extends LinearOpMode {
                 if (gamepad2.y){
                     s_FwCl.FlowerUp();
                 } else if (gamepad2.a){
-                    s_FwCl.FlowerDown();}
-
-                if (gamepad2.dpad_right) {
                     s_FwCl.flowerJitter(getRuntime());
                 }
 
