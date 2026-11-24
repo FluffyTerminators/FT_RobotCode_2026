@@ -159,12 +159,12 @@ class ForwardVelocity extends TuningOpMode<Double> {
 
         while (!end) {
             localizer.update();
-            if (Math.abs(localizer.pose().x()) > distance) {
+            if (Math.abs(localizer.pose().y()) > distance) {
                 end = true;
                 drivetrain.stop();
             } else {
                 drivetrain.drive(power, true);
-                double currentVelocity = Math.abs(localizer.twist().toVector2D().x());
+                double currentVelocity = Math.abs(localizer.twist().toVector2D().y());
                 velocities.addLast(currentVelocity);
                 velocities.removeFirst();
             }
@@ -217,12 +217,12 @@ class StrafeVelocity extends TuningOpMode<Double> {
 
         while (!end) {
             localizer.update();
-            if (Math.abs(localizer.pose().y()) > distance) {
+            if (Math.abs(localizer.pose().x()) > distance) {
                 end = true;
                 drivetrain.stop();
             } else {
                 drivetrain.drive(power, false);
-                double currentVelocity = Math.abs(localizer.twist().toVector2D().y());
+                double currentVelocity = Math.abs(localizer.twist().toVector2D().x());
                 velocities.addLast(currentVelocity);
                 velocities.removeFirst();
             }
