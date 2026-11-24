@@ -56,51 +56,21 @@ public class HivePark extends LinearOpMode {
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         pinpoint.setHeading(0, AngleUnit.DEGREES);
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH,9,9,AngleUnit.DEGREES,0));
         pinpoint.update();
-        double heading = pinpoint.getHeading(AngleUnit.DEGREES);
+        //double heading = pinpoint.getHeading(AngleUnit.DEGREES);
 
      //  while(!(s_Drive.driveToRelativePosition(new Pose2D(DistanceUnit.INCH,10,10,AngleUnit.DEGREES,0)))){}
 
         waitForStart();
-        double starttime = getRuntime();
-        s_Drive.driveControl(-1, 0, 0, 0);
-
-        while (getRuntime() < starttime + 0.1);
-        s_Drive.driveControl(0,0,0,0);
-
-        // shoot
-        starttime = getRuntime();
-        s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-        //for (int i = 0; i < 3; i++) {
-        while (!s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed, true) &&
-                (getRuntime() < starttime + Constants.Shooter.max_auto_shoot))
+        //double starttime = getRuntime();
+        //s_Drive.driveControl(1, 0, 0, 0);
+        while (!(s_Drive.driveToAbsolutePosition(new Pose2D(DistanceUnit.INCH,20,20,AngleUnit.DEGREES,-90))))
         {
-            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-            s_Passthrough.stopPass();
+            pinpoint.update();
+            telemetry.addData("X",pinpoint.getPosX(DistanceUnit.INCH));
+            telemetry.addData("Y",pinpoint.getPosY(DistanceUnit.INCH));
+            telemetry.addData("Heading",pinpoint.getHeading(AngleUnit.DEGREES));
         }
-        while (getRuntime() < starttime + Constants.Shooter.max_auto_shoot)
-        {
-            s_Shooter.pollenRev(Constants.Shooter.pollen_shooter_speed);
-            if (s_Shooter.speedCheck(Constants.Shooter.pollen_shooter_speed,true))
-            {
-                s_Passthrough.runPass();
-            }
-            else
-            {
-                s_Passthrough.stopPass();
-            }
-        }
-        starttime = getRuntime();
-        s_Drive.driveControl(0,1 ,0,0);
-
-        while (getRuntime() < starttime + 0.8);
-        s_Drive.driveControl(0,0,0,0);
-
-        starttime = getRuntime();
-        s_Drive.driveControl(-1,0.1 ,0,0);
-
-        while (getRuntime() < starttime + 0.8);
-        s_Drive.driveControl(0,0,0,0);
-
     }
-}   //
+}

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Util.UtilFunctions;
 
@@ -8,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Util.Constants;
+
+import java.util.ResourceBundle;
 
 public class Drive
 {
@@ -83,23 +87,35 @@ public class Drive
 
     public boolean driveToAbsolutePosition(Pose2D target)
     {
-        return true;
+        pinpoint.update();
+        Pose2D currPos = pinpoint.getPosition();
+        double strafe = UtilFunctions.clamp((currPos.getX(DistanceUnit.INCH)-target.getX(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
+        double forward = UtilFunctions.clamp((currPos.getY(DistanceUnit.INCH)-target.getY(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
+        double turn = UtilFunctions.clamp((currPos.getHeading(AngleUnit.DEGREES)-target.getHeading(AngleUnit.DEGREES))*Constants.Drive.autoGain,-1,1);
+        driveControl(forward,strafe,turn, pinpoint.getHeading(AngleUnit.DEGREES));
+
+        return ((Math.abs(strafe) < Constants.Drive.autoPositionTolerance) && (Math.abs(forward) < Constants.Drive.autoPositionTolerance) && (Math.abs(turn) < Constants.Drive.autoPositionTolerance));
+        //return true;
     }
 
-    public boolean driveToRelativePosition(Pose2D target)
+    /*public boolean driveToRelativePosition(Pose2D target)
     {
         return true;
-    }
+    }*/
 
     public boolean turnToAbsoluteAngle(double targetHeading)
     {
-        return true;
+        pinpoint.update();
+        double currHeading = pinpoint.getHeading(AngleUnit.DEGREES);
+        double turn = UtilFunctions.clamp((currHeading-targetHeading)*Constants.Drive.autoGain,-1,1);
+        driveControl(0,0,turn, currHeading);
+        return (Math.abs(turn) < Constants.Drive.autoPositionTolerance);
     }
 
-    public boolean turnToRelativeAngle(double targetHeading)
+    /*public boolean turnToRelativeAngle(double targetHeading)
     {
         return true;
-    }
+    }*/
 
     public void driveControl(double forwardInput, double strafeInput, double turnInput, double heading)
     {
