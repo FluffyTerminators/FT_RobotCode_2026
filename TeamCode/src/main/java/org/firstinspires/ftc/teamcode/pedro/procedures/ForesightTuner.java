@@ -280,7 +280,7 @@ class ForwardDeceleration extends TuningOpMode<Double> {
 
         while (!stopping) {
             localizer.update();
-            double currentVelocity = localizer.twist().toVector2D().x();
+            double currentVelocity = localizer.twist().toVector2D().y();
             if (Math.abs(currentVelocity) > velocity) {
                 previousVelocity = currentVelocity;
                 previousTimeNano = System.nanoTime();
@@ -297,7 +297,7 @@ class ForwardDeceleration extends TuningOpMode<Double> {
         while (!end) {
             localizer.update();
             drivetrain.stop(false);
-            double currentVelocity = localizer.twist().toVector2D().x();
+            double currentVelocity = localizer.twist().toVector2D().y();
             long currentTimeNano = System.nanoTime();
             double dt = (currentTimeNano - previousTimeNano) / 1e9;
 
@@ -374,7 +374,7 @@ class StrafeDeceleration extends TuningOpMode<Double> {
 
         while (!stopping) {
             localizer.update();
-            double currentVelocity = localizer.twist().toVector2D().y();
+            double currentVelocity = localizer.twist().toVector2D().x();
             if (Math.abs(currentVelocity) > velocity) {
                 previousVelocity = currentVelocity;
                 previousTimeNano = System.nanoTime();
@@ -391,7 +391,7 @@ class StrafeDeceleration extends TuningOpMode<Double> {
         while (!end) {
             drivetrain.stop(false);
             localizer.update();
-            double currentVelocity = localizer.twist().toVector2D().y();
+            double currentVelocity = localizer.twist().toVector2D().x();
             long currentTimeNano = System.nanoTime();
             double dt = (currentTimeNano - previousTimeNano) / 1e9;
 
@@ -752,7 +752,7 @@ class ForwardBraking extends TuningOpMode<List<Double>> {
 
             switch (state) {
                 case DRIVE: {
-                    if ((direction > 0 && Math.abs(localizer.pose().x()) >= distance) || (direction < 0 && Math.abs(localizer.pose().x()) <= 12)) {
+                    if ((direction > 0 && Math.abs(localizer.pose().y()) >= distance) || (direction < 0 && Math.abs(localizer.pose().y()) <= 12)) {
                         startPosition = localizer.pose().toVector2D();
                         measuredVelocity = localizer.velocity().toVector2D().magnitude();
 
@@ -920,8 +920,8 @@ class StrafeBraking extends TuningOpMode<List<Double>> {
 
             switch (state) {
                 case DRIVE: {
-                    if ((direction > 0 && Math.abs(localizer.pose().y()) > distance) ||
-                            (direction < 0 && Math.abs(localizer.pose().y()) <= 6)) {
+                    if ((direction > 0 && Math.abs(localizer.pose().x()) > distance) ||
+                            (direction < 0 && Math.abs(localizer.pose().x()) <= 6)) {
                         startPosition = localizer.pose().toVector2D();
                         measuredVelocity = localizer.velocity().toVector2D().magnitude();
 
@@ -1083,7 +1083,7 @@ class ForwardTranslational extends TuningOpMode<List<Double>> {
             if (!done) {
                 times.add(timer.seconds());
 
-                double forwardVelocity = Math.abs(localizer.twist().toVector2D().x());
+                double forwardVelocity = Math.abs(localizer.twist().toVector2D().y());
                 vMax = Math.max(vMax, forwardVelocity / POWER);
 
                 velocities.add(forwardVelocity);
@@ -1203,7 +1203,7 @@ class StrafeTranslational extends TuningOpMode<List<Double>> {
             if (!done) {
                 times.add(timer.seconds());
 
-                double lateralVelocity = Math.abs(localizer.twist().toVector2D().y());
+                double lateralVelocity = Math.abs(localizer.twist().toVector2D().x());
                 vMax = Math.max(vMax, lateralVelocity / POWER);
 
                 velocities.add(lateralVelocity);
