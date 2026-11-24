@@ -81,17 +81,22 @@ public class Drive
     }
 
     public void setBrakeMode(boolean mode)
-        {
-            brakeMode = mode;
-        }
+    {
+        brakeMode = mode;
+    }
+
+    public void setActiveBrakeMode(boolean mode)
+    {
+        activeBrake = mode;
+    }
 
     public boolean driveToAbsolutePosition(Pose2D target)
     {
         pinpoint.update();
         Pose2D currPos = pinpoint.getPosition();
-        double strafe = UtilFunctions.clamp((currPos.getX(DistanceUnit.INCH)-target.getX(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
-        double forward = UtilFunctions.clamp((currPos.getY(DistanceUnit.INCH)-target.getY(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
-        double turn = UtilFunctions.clamp((currPos.getHeading(AngleUnit.DEGREES)-target.getHeading(AngleUnit.DEGREES))*Constants.Drive.autoGain,-1,1);
+        double strafe = UtilFunctions.clamp((target.getX(DistanceUnit.INCH) - currPos.getX(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
+        double forward = UtilFunctions.clamp((target.getY(DistanceUnit.INCH) - currPos.getY(DistanceUnit.INCH))*Constants.Drive.autoGain,-1,1);
+        double turn = UtilFunctions.clamp((target.getHeading(AngleUnit.DEGREES) - currPos.getHeading(AngleUnit.DEGREES))*Constants.Drive.autoGain,-1,1);
         driveControl(forward,strafe,turn, pinpoint.getHeading(AngleUnit.DEGREES));
 
         return ((Math.abs(strafe) < Constants.Drive.autoPositionTolerance) && (Math.abs(forward) < Constants.Drive.autoPositionTolerance) && (Math.abs(turn) < Constants.Drive.autoPositionTolerance));

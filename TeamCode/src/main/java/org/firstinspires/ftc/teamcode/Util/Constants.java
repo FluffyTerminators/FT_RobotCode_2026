@@ -7,7 +7,7 @@ public class Constants
         public static final double brake = 0.5;
         public static final double headingOffset = 0;
         public static final double activeBrakeStep = 0.01;
-        public static final double autoGain = 0.3;
+        public static final double autoGain = 0.1;
         public static final double autoPositionTolerance = 0.5;
     }
     public static final class Controls{

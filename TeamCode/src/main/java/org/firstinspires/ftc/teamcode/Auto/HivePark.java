@@ -65,12 +65,13 @@ public class HivePark extends LinearOpMode {
         waitForStart();
         //double starttime = getRuntime();
         //s_Drive.driveControl(1, 0, 0, 0);
-        while (!(s_Drive.driveToAbsolutePosition(new Pose2D(DistanceUnit.INCH,20,20,AngleUnit.DEGREES,-90))))
+        while (!(s_Drive.driveToAbsolutePosition(new Pose2D(DistanceUnit.INCH,20,0,AngleUnit.DEGREES,-90))))
         {
             pinpoint.update();
             telemetry.addData("X",pinpoint.getPosX(DistanceUnit.INCH));
             telemetry.addData("Y",pinpoint.getPosY(DistanceUnit.INCH));
             telemetry.addData("Heading",pinpoint.getHeading(AngleUnit.DEGREES));
         }
+        s_Drive.driveControl(0,0,0,0);
     }
 } //
