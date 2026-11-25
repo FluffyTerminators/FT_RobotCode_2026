@@ -32,7 +32,7 @@ public class RetuneTest extends LinearOpMode{
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose hiveStart = poseFactory.of(59, 8.75, 90);
+    private final Pose hiveStart = poseFactory.of(59, 8.75, 270);
     private final Pose leaveWall = poseFactory.of(59, 15, 270);
     private final Pose strafetoSideWall = poseFactory.of(9, 15, 270);
     private final Pose intakefromGarden = poseFactory.of(9, 8.75, 270);
@@ -42,10 +42,10 @@ public class RetuneTest extends LinearOpMode{
     // Autonomous routine
     public Command autoRoutine() {
         return sequential(
-                follow(follower, leaveWall()),
-                follow(follower, strafetoSideWall()),
-                follow(follower, intakefromGarden()),
-                follow(follower, gardentoPark())
+                follow(follower, leaveWall())
+               // follow(follower, strafetoSideWall()),
+                //follow(follower, intakefromGarden()),
+                //follow(follower, gardentoPark())
         );
     }
 
